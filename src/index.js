@@ -68,11 +68,17 @@ export async function run() {
     const tmateWeb = await execShellCommand(`${tmateExecutable} -S /tmp/tmate.sock display -p '#{tmate_web}'`);
 
     console.debug("Entering main loop")
+
+    let i = 0;
     while (true) {
-      if (tmateWeb) {
-        core.info(`Web shell: ${tmateWeb}`);
+      if (i < 10 || i % 10 == 0)
+      {
+        if (tmateWeb) {
+          core.info(`Web shell: ${tmateWeb}`);
+        }
+        core.info(`SSH: ${tmateSSH}`);
       }
-      core.info(`SSH: ${tmateSSH}`);
+      i++;
 
       if (continueFileExists()) {
         core.info("Exiting debugging session because the continue file was created")
